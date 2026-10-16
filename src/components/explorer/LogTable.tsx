@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { formatTime } from "@/lib/format";
 import { API_BASE_URL } from "@/lib/config";
@@ -13,8 +14,15 @@ interface Props {
   onUseDemo: () => void;
 }
 
+/** Newest first by the timestamp field; row_id breaks exact ties. */
+export function byTimestampDesc(a: LogEntry, b: LogEntry): number {
+  const diff = Date.parse(b.timestamp) - Date.parse(a.timestamp);
+  return diff || b.row_id - a.row_id;
+}
+
 // Dense log table with sticky header. Clicking a row opens the detail drawer.
 export function LogTable({ logs, freshIds, loading, error, onSelect, onUseDemo }: Props) {
+  const rows = useMemo(() => [...logs].sort(byTimestampDesc), [logs]);
   let state: React.ReactNode = null;
   if (error) {
     state = (
@@ -42,7 +50,7 @@ export function LogTable({ logs, freshIds, loading, error, onSelect, onUseDemo }
           </tr>
         </thead>
         <tbody>
-          {logs.map((log) => (
+          {rows.map((log) => (
             <tr
               key={log.row_id}
               tabIndex={0}
