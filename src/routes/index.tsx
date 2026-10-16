@@ -59,6 +59,7 @@ function LogExplorer() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [alert, setAlert] = useState<{ count: number; services: string[] } | null>(null);
   const maxRowId = useRef(0);
+  const loadingRef = useRef(true); // true while the initial load is in flight
 
   const onSuccess = useCallback(() => {
     if (mode === "live") {
@@ -97,6 +98,7 @@ function LogExplorer() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    loadingRef.current = true;
     setError(false);
     fetchLogs(mode, { ...toQuery(filters), limit: INITIAL_LIMIT })
       .then((res) => {
@@ -108,7 +110,11 @@ function LogExplorer() {
         onSuccess();
       })
       .catch(() => !cancelled && onFailure())
-      .finally(() => !cancelled && setLoading(false));
+      .finally(() => {
+        if (cancelled) return;
+        setLoading(false);
+        loadingRef.current = false;
+      });
     return () => {
       cancelled = true;
     };
@@ -117,7 +123,7 @@ function LogExplorer() {
   // Live tail: ask only for rows newer than the highest row_id we have.
   useInterval(
     async () => {
-      if (loading) return;
+      if (loadingRef.current) return;
       try {
         const res = await fetchLogs(mode, { ...toQuery(filters), since_id: maxRowId.current, limit: 1000 });
         onSuccess();
