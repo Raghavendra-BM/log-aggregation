@@ -12,4 +12,5 @@ export const INITIAL_LIMIT = 100;
 export const TAIL_INTERVAL_MS = 2000;
 export const STATS_INTERVAL_MS = 3000;
 export const ALERT_INTERVAL_MS = 5000;
-export const ALERT_THRESHOLD = 5;
+/** Errors in the last 60 seconds that trigger the alert banner. */
+export const ERROR_ALERT_THRESHOLD = 40;

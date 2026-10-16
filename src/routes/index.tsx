@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchLogs, fetchRecentErrors, fetchRecentLogs, fetchStats, secondsAgo } from "@/lib/api";
 import {
-  ALERT_INTERVAL_MS, ALERT_THRESHOLD, INITIAL_LIMIT, MAX_ROWS, STATS_INTERVAL_MS, TAIL_INTERVAL_MS,
+  ALERT_INTERVAL_MS, ERROR_ALERT_THRESHOLD, INITIAL_LIMIT, MAX_ROWS, STATS_INTERVAL_MS, TAIL_INTERVAL_MS,
 } from "@/lib/config";
 import { formatNumber } from "@/lib/format";
 import type { DataMode, LogEntry, LogQuery, TimeRange } from "@/lib/types";
@@ -163,7 +163,7 @@ function LogExplorer() {
       try {
         const res = await fetchRecentErrors(mode);
         const svc = [...new Set(res.logs.map((l) => l.service))];
-        setAlert(res.count >= ALERT_THRESHOLD ? { count: res.count, services: svc } : null);
+        setAlert(res.count >= ERROR_ALERT_THRESHOLD ? { count: res.count, services: svc } : null);
       } catch {
         setAlert(null);
       }
@@ -176,7 +176,7 @@ function LogExplorer() {
   return (
     <div className="flex h-screen flex-col bg-background">
       <TopBar mode={mode} reachable={reachable} fellBack={fellBack} onModeChange={changeMode} />
-      {alert && <AlertBanner count={alert.count} services={alert.services} />}
+      {alert && <AlertBanner count={alert.count} threshold={ERROR_ALERT_THRESHOLD} services={alert.services} />}
       <StatsStrip stats={stats} />
       <FilterBar
         filters={filters}
