@@ -26,13 +26,13 @@ export interface StatsResponse {
 }
 
 export interface LogQuery {
-  service?: string;
-  level?: string;
-  q?: string;
-  from?: string;
-  to?: string;
-  since_id?: number;
-  limit?: number;
+  service?: string | undefined;
+  level?: string | undefined;
+  q?: string | undefined;
+  from?: string | undefined;
+  to?: string | undefined;
+  since_id?: number | undefined;
+  limit?: number | undefined;
 }
 
 /** Where data comes from: the real collector or the in-browser mock. */

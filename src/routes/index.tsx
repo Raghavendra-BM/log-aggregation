@@ -123,7 +123,7 @@ function LogExplorer() {
         onSuccess();
         setError(false);
         if (res.logs.length === 0) return;
-        maxRowId.current = Math.max(maxRowId.current, res.logs[0].row_id);
+        maxRowId.current = Math.max(maxRowId.current, res.logs[0]!.row_id);
         rememberServices(res.logs);
         setFreshIds(new Set(res.logs.map((l) => l.row_id)));
         setLogs((prev) => [...res.logs, ...prev].slice(0, MAX_ROWS));

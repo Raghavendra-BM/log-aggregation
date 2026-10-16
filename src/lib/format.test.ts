@@ -16,7 +16,7 @@ describe("formatTime", () => {
 describe("mock logs", () => {
   it("since_id returns only newer rows", () => {
     const first = mockGetLogs({ limit: 10 });
-    const max = first.logs[0].row_id;
+    const max = first.logs[0]!.row_id;
     expect(mockGetLogs({ since_id: max }).logs.every((l) => l.row_id > max)).toBe(true);
   });
   it("level filter is case-insensitive", () => {

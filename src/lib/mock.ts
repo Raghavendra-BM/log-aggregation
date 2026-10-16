@@ -25,7 +25,7 @@ const MESSAGES: Record<string, Record<Level, string[]>> = {
   },
 };
 
-const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)] as T;
 
 function randomLevel(): Level {
   const r = Math.random();
@@ -59,7 +59,7 @@ function makeLog(s: Store, at: number): LogEntry {
     level,
     host,
     seq: s.seq[key],
-    message: pick(MESSAGES[service][level]).replace("{n}", String(n)),
+    message: pick(MESSAGES[service]![level]).replace("{n}", String(n)),
   };
 }
 
@@ -89,7 +89,7 @@ export function mockGetLogs(query: LogQuery): LogsResponse {
   const q = query.q?.toLowerCase();
   const out: LogEntry[] = [];
   for (let i = s.logs.length - 1; i >= 0 && out.length < limit; i--) {
-    const l = s.logs[i];
+    const l = s.logs[i]!;
     if (query.since_id !== undefined && l.row_id <= query.since_id) break;
     if (query.service && l.service !== query.service) continue;
     if (query.level && l.level !== query.level.toUpperCase()) continue;
