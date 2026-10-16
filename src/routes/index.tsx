@@ -7,12 +7,12 @@ import {
 import { formatNumber } from "@/lib/format";
 import type { DataMode, LogEntry, LogQuery, TimeRange } from "@/lib/types";
 import { useInterval } from "@/hooks/use-interval";
-import { TopBar } from "@/components/logs/TopBar";
-import { AlertBanner } from "@/components/logs/AlertBanner";
-import { StatsStrip, type Stats } from "@/components/logs/StatsStrip";
-import { FilterBar, EMPTY_FILTERS, type Filters } from "@/components/logs/FilterBar";
-import { LogTable } from "@/components/logs/LogTable";
-import { LogDrawer } from "@/components/logs/LogDrawer";
+import { TopBar } from "@/components/explorer/TopBar";
+import { AlertBanner } from "@/components/explorer/AlertBanner";
+import { StatsStrip, type Stats } from "@/components/explorer/StatsStrip";
+import { FilterBar, EMPTY_FILTERS, type Filters } from "@/components/explorer/FilterBar";
+import { LogTable } from "@/components/explorer/LogTable";
+import { LogDrawer } from "@/components/explorer/LogDrawer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
